@@ -1,21 +1,16 @@
-name: Terraform Apply
+name: terraform
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
-
-permissions:
-  id-token: write
-  contents: read
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Setup Terraform
@@ -23,36 +18,19 @@ jobs:
         with:
           terraform_version: 1.8.2
 
-      - name: Azure Login
+      - name: Login no Azure
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.ARM_CLIENT_ID }}
+          client-secret: ${{ secrets.ARM_CLIENT_SECRET }}
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          auth-type: SERVICE_PRINCIPAL
 
-      - name: Terraform Init
-        run: terraform init -reconfigure
-        working-directory: ./terraform/azure
+      - name: Init Terraform
+        run: terraform -chdir=terraform/azure init -reconfigure
 
-      - name: Terraform Validate
-        run: terraform validate
-        working-directory: ./terraform/azure
+      - name: Validate Terraform
+        run: terraform -chdir=terraform/azure validate
 
-      - name: Terraform Plan
-        run: |
-          terraform plan \
-            -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
-            -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
-            -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-            -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
-        working-directory: ./terraform/azure
-
-      - name: Terraform Apply
-        run: |
-          terraform apply -auto-approve \
-            -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
-            -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
-            -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-            -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
-        working-directory: ./terraform/azure
+      - name: Plan Terraform
+        run: terraform -chdir=terraform/azure plan
