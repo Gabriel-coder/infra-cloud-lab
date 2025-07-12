@@ -30,6 +30,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    # comentando somente para teste.
+
       - name: Terraform Init
         run: terraform init
 
