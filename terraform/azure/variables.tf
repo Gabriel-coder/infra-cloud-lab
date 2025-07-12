@@ -18,3 +18,9 @@ variable "subscription_id" {
   type        = string
   description = "Azure subscription ID"
 }
+
+variable "azure_credentials" {
+  description = "Credenciais JSON para autenticar no Azure"
+  type        = string
+  sensitive   = true
+}

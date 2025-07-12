@@ -1,7 +1,9 @@
-name: Terraform Azure
+name: Terraform Azure Pipeline
 
 on:
   push:
+    paths:
+      - 'terraform/azure/**'
     branches:
       - main
 
@@ -27,6 +29,6 @@ jobs:
         run: terraform init
         working-directory: terraform/azure
 
-      - name: Terraform Plan
+      - name: Plan Terraform
         run: terraform plan
         working-directory: terraform/azure
