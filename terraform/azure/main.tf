@@ -80,12 +80,12 @@ resource "azurerm_network_interface_security_group_association" "nic_nsg_assoc" 
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                  = "vm-lab"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
-  size                  = "Standard_B1s"
-  admin_username        = "azureuser"
-  network_interface_ids = [azurerm_network_interface.nic.id]
+  name                            = "vm-lab"
+  location                        = azurerm_resource_group.rg.location
+  resource_group_name             = azurerm_resource_group.rg.name
+  size                            = "Standard_B1s"
+  admin_username                  = "azureuser"
+  network_interface_ids           = [azurerm_network_interface.nic.id]
   disable_password_authentication = true
 
   admin_ssh_key {
@@ -110,4 +110,18 @@ resource "azurerm_linux_virtual_machine" "vm" {
   tags = {
     Environment = "Lab"
   }
+}
+
+resource "azurerm_storage_account" "tfstate" {
+  name                     = "tfstatelab${random_string.suffix.result}" # precisa ser único
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "tfstate" {
+  name                  = "tfstate"
+  storage_account_name  = azurerm_storage_account.tfstate.name
+  container_access_type = "private"
 }
