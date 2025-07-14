@@ -1,0 +1,13 @@
+---
+- name: Customizar página do NGINX no container
+  hosts: azure
+  become: yes
+
+  tasks:
+    - name: Copiar index.html para a VM
+      copy:
+        src: ./index.html
+        dest: /tmp/index.html
+
+    - name: Copiar index.html para dentro do container NGINX
+      command: docker cp /tmp/index.html nginx:/usr/share/nginx/html/index.html

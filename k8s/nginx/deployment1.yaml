@@ -1,0 +1,4 @@
+containers:
+- name: crash
+  image: busybox
+  command: ["sh", "-c", "exit 1"]

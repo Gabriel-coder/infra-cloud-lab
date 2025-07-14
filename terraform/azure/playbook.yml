@@ -1,0 +1,24 @@
+- name: Provisionar VM Ubuntu com pacotes básicos
+  hosts: azure  # <- alterado de 'vm_lab' para 'azure'
+  become: yes
+
+  tasks:
+    - name: Atualizar lista de pacotes
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Instalar pacotes úteis
+      apt:
+        name:
+          - git
+          - curl
+          - htop
+          - unzip
+          - vim
+        state: present
+
+    - name: Garantir que o UFW está desabilitado
+      ufw:
+        state: disabled
+

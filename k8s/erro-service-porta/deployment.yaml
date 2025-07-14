@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-mismatch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-mismatch
+  template:
+    metadata:
+      labels:
+        app: nginx-mismatch
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+

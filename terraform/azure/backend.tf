@@ -3,6 +3,6 @@ terraform {
     resource_group_name  = "rg-tf-lab"
     storage_account_name = "tfstatelabklre"
     container_name       = "tfstate"
-    key                  = "infra.tfstate"
+    key                  = "infra-v2.tfstate"
   }
 }

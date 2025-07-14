@@ -1,0 +1,20 @@
+---
+- name: Provisionar VM Azure com Nginx
+  hosts: azure
+  become: yes
+
+  tasks:
+    - name: Atualizar cache do apt
+      apt:
+        update_cache: yes
+
+    - name: Instalar Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Garantir que Nginx está rodando
+      service:
+        name: nginx
+        state: started
+        enabled: yes

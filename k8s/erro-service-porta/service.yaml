@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-mismatch-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-mismatch
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080  # <- ERRADO de propósito: porta que o container não escuta
+

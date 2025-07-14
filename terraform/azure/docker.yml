@@ -1,0 +1,45 @@
+- name: Instala Docker na VM Azure
+  hosts: azure
+  become: true
+
+  tasks:
+    - name: Atualiza pacotes
+      apt:
+        update_cache: yes
+
+    - name: Instala dependências do Docker
+      apt:
+        name: 
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Adiciona chave GPG do Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adiciona repositório oficial do Docker
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Instala Docker
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+
+    - name: Adiciona usuário ao grupo docker
+      user:
+        name: azureuser
+        groups: docker
+        append: yes
+
+    - name: Habilita e inicia o serviço Docker
+      systemd:
+        name: docker
+        enabled: yes
+        state: started

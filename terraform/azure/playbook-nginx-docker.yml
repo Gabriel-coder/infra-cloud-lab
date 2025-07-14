@@ -1,0 +1,13 @@
+- name: Subir container NGINX com Docker
+  hosts: azure
+  become: true
+
+  tasks:
+    - name: Subir container nginx
+      community.docker.docker_container:
+        name: nginx
+        image: nginx:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "80:80"

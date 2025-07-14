@@ -1,3 +1,18 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
+  }
+
+  required_version = ">= 1.0.0"
+}
+
 resource "random_string" "suffix" {
   length  = 4
   upper   = false
@@ -113,7 +128,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 resource "azurerm_storage_account" "tfstate" {
-  name                     = "tfstatelab${random_string.suffix.result}" # precisa ser único
+  name                     = "tfstatelab${random_string.suffix.result}"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
